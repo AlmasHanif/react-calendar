@@ -21,7 +21,7 @@ class Month extends React.Component {
     state = {
         currentMonth: new Date(),
         selectedDate: new Date(),
-        events : []
+        events: []
     };
 
     renderHeader() {
@@ -64,25 +64,26 @@ class Month extends React.Component {
     }
 
     renderCells() {
-        const { currentMonth, selectedDate } = this.state;
+        const { currentMonth, selectedDate , events} = this.state;
         const monthStart = startOfMonth(currentMonth);
         const monthEnd = endOfMonth(monthStart);
         const startDate = startOfWeek(monthStart);
         const endDate = endOfWeek(monthEnd);
-  
+
         const dateFormat = "d";
         const rows = [];
 
         let days = [];
         let day = startDate;
         let formattedDate = "";
-       
+
         while (day <= endDate) {
             for (let i = 0; i < 7; i++) {
                 formattedDate = format(day, dateFormat);
                 const cloneDay = day;
-                // console.log(cloneDay, "clone............")
-               
+                console.log(cloneDay, "clone../..........")
+              
+                // const arr =[{event : "lunch" , id : cloneDay} , {event : "dinner" , id : cloneDay}]
                 days.push(
                     <div
                         className={`col cell ${!isSameMonth(day, monthStart)
@@ -93,10 +94,11 @@ class Month extends React.Component {
                         onClick={() => this.onDateClick(cloneDay)}
                     >
                         <span className="number">{formattedDate}</span>
+
                         <span className="bg">{formattedDate}</span>
                     </div>
                 );
-             
+
                 day = addDays(day, 1);
             }
             rows.push(
@@ -105,21 +107,30 @@ class Month extends React.Component {
                 </div>
             );
             days = [];
-            
+
             // console.log(days, "dayssss")
         }
         return <div className="body">{rows}</div>;
+    };
+
+    renderEvents() {
+        const { currentMonth, selectedDate, events } = this.state;
+
+        return <div>{
+            events.map((event, id) => (
+                <h1 key={id}>{event.event}</h1>
+            ))
+            }</div>
     }
 
     onDateClick = day => {
-        this.setState({
-            selectedDate: day
-        });
+        const { currentMonth, selectedDate, events } = this.state;
+
         console.log(day, "day")
         let event = prompt("enter your event")
         console.log(day, "date", event)
         this.setState({
-            events : ([this.state.events ,{event : event , id : day}])
+            events: ([...events, { event: event, id: day }])
         })
         console.log(this.state.events , "state")
     };
@@ -143,6 +154,7 @@ class Month extends React.Component {
                 {this.renderDays()}
                 <hr />
                 {this.renderCells()}
+                {this.renderEvents()}
 
             </div>
         );
