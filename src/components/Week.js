@@ -67,10 +67,13 @@ class Week extends React.Component {
 
         return (
             <><div className="row">
+                <div className="col"></div>
                 {daysName.map((day, i) => (
+                    
                     <div key={i} className="col weekName">{day}</div>
                 ))}
             </div><div className="row">
+            <div className="col"></div>
 
                     {days.map((days, i) => (
 
